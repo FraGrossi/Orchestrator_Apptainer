@@ -1,0 +1,20 @@
+
+Bootstrap: docker 
+From: ubuntu:22.04 
+
+%post
+	apt-get update && apt-get install -y curl
+	apt install iputils-ping -y 
+	mkdir /home/nextpyter
+
+%environment
+export HOME=/home/nextpyter
+cd /home/nextpyter
+		export NB_USER=nextpyter
+	export NB_GID=33
+	export NB_UMASK=002
+	export CHOWN_HOME=yes
+
+%%startscript
+	echo hello world
+	ls

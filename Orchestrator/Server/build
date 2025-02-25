@@ -1,0 +1,4 @@
+go mod init server
+go mod tidy
+go build -o server server
+sudo setcap cap_dac_override,cap_dac_read_search+ep ./server
