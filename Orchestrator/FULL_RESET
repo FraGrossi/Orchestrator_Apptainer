@@ -1,0 +1,23 @@
+echo "[START]"
+
+TARGET_DIR=$(dirname "$(dirname "$1")")
+
+for dir in "$TARGET_DIR"/*:*; do
+    [ -d "$dir" ] || continue
+
+    dirname=$(basename "$dir")
+    prefix=$(echo "$dirname" | cut -d':' -f1)
+
+    # Fermo le istanze attive
+    if sudo apptainer instance list | grep -qw "$prefix"; then
+        sudo apptainer instance stop $prefix
+        echo "Istanza $prefix fermata" 
+    fi
+
+    # Elimino i salvataggi di tutti i container
+    sudo rm -rf "$dir"
+    echo "Salvataggi in $dir eliminati" 
+
+done 
+
+echo "[FINISH]"

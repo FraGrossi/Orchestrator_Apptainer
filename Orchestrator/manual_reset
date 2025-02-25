@@ -1,0 +1,27 @@
+echo "[START]"
+
+# Elimino salvataggi dell'orchestrator
+rm $ORCHESTRATOR_PATH
+echo "Salvataggi Orchestrator eliminati"
+
+TARGET_DIR=$(dirname "$(dirname "$ORCHESTRATOR_PATH")")
+
+for dir in "$TARGET_DIR"/*:*; do
+    [ -d "$dir" ] || continue
+
+    dirname=$(basename "$dir")
+    prefix=$(echo "$dirname" | cut -d':' -f1)
+
+    # Fermo le istanze attive
+    if sudo apptainer instance list | grep -qw "$prefix"; then
+        sudo apptainer instance stop $prefix
+        echo "Istanza $prefix fermata" 
+    fi
+
+    # Elimino i salvataggi di tutti i container
+    sudo rm -rf "$dir"
+    echo "Salvataggi in $dir eliminati" 
+
+done 
+
+echo "[FINISH]"
