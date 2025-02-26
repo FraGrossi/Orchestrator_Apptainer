@@ -12,12 +12,18 @@ Il progetto può essere installato usando l'eseguibile fornito che creerà nella
 
 ```
 /opt/
-└── apptainer_container/  # Cartella del progetto
-    ├── orchestrator/     # Cartella con file per server ed Orchestrator
-    |   ├── FULL_RESET    # Eseguibile per ripristinare l'Orchestrator
-    |   ├── save          # File contente informazioni sui vari container
-    |   └── server        # Eseguibile del server 
-    └── container:img     # Immagini dei container
+└── Orchestrator_Apptainer # Cartella del progetto
+    ├── Orchestrator/      # Cartella con file per server ed Orchestrator
+    |   ├── FULL_RESET     # Eseguibile per ripristinare l'Orchestrator
+    |   ├── manual_reset   # Come FULL_RESET con output leggibile
+    |   ├── save           # File contente informazioni sui vari container
+    |   └── Server         # Cartella contentenente file source del server 
+    |        ├── server                    # Eseguibile del server
+    |        ├── main.go                   # File source del server
+    |        ├── orchestrator_actions.go   # Azioni dell'orchestrator
+    |        ├── response.go               # Risposte JSON per i client
+    |        └── util.go                   # Funzioni secondarie orchestrator
+    └── container:img      # Immagini dei container
 ```
 
 ## Funzionalità dell'Orchestrator
@@ -37,7 +43,7 @@ mux.HandleFunc("/createvolume", create_notebook_volume)
 mux.HandleFunc("/removevolume", remove_notebook_volume)
 ```
 
-- `/start`: Funzione per la creazione di immagini apptainer
+- `/start`: Funzione per la creazione di immagini apptainer.
   
 - `/stop`: Funzione per fermare temporaneamente delle istanze apptainer
   
@@ -54,7 +60,8 @@ mux.HandleFunc("/removevolume", remove_notebook_volume)
 - `/createvolume`: Funzione che crea bind dinamici tra directory della macchina host e del container
   
 - `/deletevolume`: Funzione che rimuove bind dinamici precedentemente instaurati
-  
+
+Per informazioni più dettagliate sul funzionamento dei singoli comandi andare a controllare il file `/Orchestrator/Server/orchestrator_actions.go`
 
 ## Come usare il server
 
